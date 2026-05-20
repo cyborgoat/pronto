@@ -55,6 +55,12 @@ The floating launcher uses a transparent Tauri window. On macOS this requires:
 This is useful for direct distribution and development. Review App Store rules
 before shipping through the Mac App Store.
 
+## Tray Icon
+
+The system tray/menu bar icon is created in Rust from
+`src-tauri/icons/32x32.png`. If the logo changes, regenerate the icon set and
+rerun Cargo so the embedded tray/Dock icon assets update.
+
 ## Shortcut Debugging
 
 The shortcut is registered in Rust with:

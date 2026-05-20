@@ -33,6 +33,13 @@ an app, file, or folder with minimal latency.
 4. User can reindex roots and inspect result metadata.
 5. User can invoke the compact launcher from the full panel.
 
+### System Tray
+
+1. User starts Pronto.
+2. Pronto creates a persistent system tray icon.
+3. User clicks the tray icon to show or hide the full panel.
+4. User opens the tray menu to show Pronto, open the launcher, or quit.
+
 ## Functional Requirements
 
 - Register a system-level global shortcut from the Rust layer.
@@ -42,6 +49,9 @@ an app, file, or folder with minimal latency.
 - Keep launcher borderless, always on top, hidden from the taskbar, and
   transparent where supported.
 - Hide launcher on focus loss.
+- Keep a persistent system tray/menu bar icon while the app is running.
+- Provide tray menu actions for showing the full panel, opening the launcher,
+  and quitting the app.
 - Index apps, files, and folders from default roots.
 - Support fuzzy search against names, extensions, and paths.
 - Support filters in the full panel:

@@ -16,6 +16,8 @@ to `Command+Shift+P` on macOS and `Ctrl+Shift+P` on Windows/Linux.
 ## Features
 
 - Global shortcut invoked launcher window.
+- System tray/menu bar icon with actions for showing the app, opening the
+  launcher, and quitting Pronto.
 - Borderless floating search bar with auto-hide on focus loss.
 - Full search panel with filters for result type, extension, size, modified date,
   and indexed roots.

@@ -47,6 +47,21 @@ Responsibilities:
 - Open selected result on Enter.
 - Hide on Escape, focus loss, or after opening a result.
 
+## System Tray
+
+The system tray is created in Rust during setup using Tauri's built-in tray
+APIs. It uses the current app logo from `src-tauri/icons/32x32.png`.
+
+Tray behavior:
+
+- Left click toggles the full panel.
+- Menu item `Show Pronto` opens the full panel.
+- Menu item `Open Launcher` opens the floating launcher.
+- Menu item `Quit Pronto` exits the app.
+
+The main window close button hides the window instead of exiting, so Pronto can
+continue running in the background with the tray icon and global shortcut.
+
 ## Shortcut Handling
 
 Global shortcut registration belongs in Rust, not React.

@@ -7,12 +7,18 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::sync::Mutex;
 use std::time::SystemTime;
+use tauri::image::Image;
+use tauri::menu::{Menu, MenuItem, PredefinedMenuItem};
+use tauri::tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent};
 use tauri::Emitter;
 use tauri::Manager;
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, ShortcutState};
 use walkdir::{DirEntry, WalkDir};
 
 const LAUNCHER_HOTKEY: &str = "CmdOrCtrl+Shift+P";
+const TRAY_SHOW_MAIN_ID: &str = "show-main";
+const TRAY_SHOW_LAUNCHER_ID: &str = "show-launcher";
+const TRAY_QUIT_ID: &str = "quit";
 
 #[derive(Default)]
 struct AppState {
@@ -562,6 +568,70 @@ fn show_main(app: &tauri::AppHandle) -> Result<(), String> {
         .map_err(|error| error.to_string())
 }
 
+fn toggle_main(app: &tauri::AppHandle) -> Result<(), String> {
+    let Some(window) = app.get_webview_window("main") else {
+        return Err("Main window is not available".to_string());
+    };
+
+    if window.is_visible().map_err(|error| error.to_string())? {
+        window.hide().map_err(|error| error.to_string())
+    } else {
+        show_main(app)
+    }
+}
+
+fn create_tray(app: &tauri::App) -> tauri::Result<()> {
+    let show_main_item = MenuItem::with_id(app, TRAY_SHOW_MAIN_ID, "Show Pronto", true, None::<&str>)?;
+    let launcher_item = MenuItem::with_id(
+        app,
+        TRAY_SHOW_LAUNCHER_ID,
+        "Open Launcher",
+        true,
+        None::<&str>,
+    )?;
+    let separator = PredefinedMenuItem::separator(app)?;
+    let quit_item = MenuItem::with_id(app, TRAY_QUIT_ID, "Quit Pronto", true, None::<&str>)?;
+    let menu = Menu::with_items(
+        app,
+        &[&show_main_item, &launcher_item, &separator, &quit_item],
+    )?;
+    let icon = Image::from_bytes(include_bytes!("../icons/32x32.png"))?;
+
+    TrayIconBuilder::with_id("main")
+        .icon(icon)
+        .icon_as_template(false)
+        .tooltip("Pronto")
+        .menu(&menu)
+        .show_menu_on_left_click(false)
+        .on_tray_icon_event(|tray, event| {
+            if matches!(
+                event,
+                TrayIconEvent::Click {
+                    button: MouseButton::Left,
+                    button_state: MouseButtonState::Up,
+                    ..
+                }
+            ) {
+                let _ = toggle_main(tray.app_handle());
+            }
+        })
+        .on_menu_event(|app, event| match event.id().as_ref() {
+            TRAY_SHOW_MAIN_ID => {
+                let _ = show_main(app);
+            }
+            TRAY_SHOW_LAUNCHER_ID => {
+                let _ = show_launcher(app);
+            }
+            TRAY_QUIT_ID => {
+                app.exit(0);
+            }
+            _ => {}
+        })
+        .build(app)?;
+
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let app = tauri::Builder::default()
@@ -586,6 +656,7 @@ pub fn run() {
             if let Some(window) = app.get_webview_window("launcher") {
                 let _ = window.set_title("Pronto Launcher");
             }
+            create_tray(app)?;
             if let Err(error) = app.global_shortcut().on_shortcut(
                 LAUNCHER_HOTKEY,
                 |app, _shortcut, event| {
