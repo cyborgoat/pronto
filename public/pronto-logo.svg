@@ -1,0 +1,11 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Pronto logo</title>
+  <desc id="desc">A stylish italic lowercase p with an Italian tricolor accent.</desc>
+  <rect width="512" height="512" rx="112" fill="#101010"/>
+  <rect x="86" y="80" width="340" height="352" rx="84" fill="#F8F6F0"/>
+  <path d="M315 122C359 122 393 153 393 198C393 256 347 301 289 301H225L205 414H137L186 138C187 129 194 122 203 122H315ZM276 247C307 247 330 224 330 197C330 180 318 170 298 170H246L232 247H276Z" fill="#101010"/>
+  <path d="M215 122H244L193 414H164L215 122Z" fill="#101010"/>
+  <path d="M346 95C365 103 381 115 394 131" stroke="#C63232" stroke-width="18" stroke-linecap="round"/>
+  <path d="M313 86C326 87 338 90 350 95" stroke="#F8F6F0" stroke-width="18" stroke-linecap="round"/>
+  <path d="M274 91C287 87 300 85 313 86" stroke="#168449" stroke-width="18" stroke-linecap="round"/>
+</svg>
