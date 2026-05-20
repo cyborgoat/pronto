@@ -32,7 +32,7 @@ to `Command+Shift+P` on macOS and `Ctrl+Shift+P` on Windows/Linux.
 ## Brand Asset
 
 The app logo is available at `public/pronto-logo.svg`. It is a simple italic
-lowercase `p` mark with an Italian tricolor accent.
+lowercase `p` mark.
 
 ## Development
 
